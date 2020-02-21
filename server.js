@@ -33,6 +33,26 @@ app.get("/api/notes", function(req, res) {
   //   return res.json(db);
 });
 
+//Add new note
+app.post("/api/notes", function(req, res) {
+  var newNote = req.body;
+  //   newNote.routeName = newNote.name.replace(/\s+/g, "").toLowerCase();
+
+  //   console.log(newNote);
+
+  fs.readFile("./db/db.json", (err, data) => {
+    if (err) throw err;
+    let dbArray = JSON.parse(data);
+    // console.log(dbArray);
+    dbArray.push(newNote);
+    // console.log(dbArray);
+    fs.writeFile("./db/db.json", JSON.stringify(dbArray), "utf8", err => {
+      if (err) throw err;
+      console.log('The "data to append" was appended to file!');
+    });
+  });
+});
+
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
