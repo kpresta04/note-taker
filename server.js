@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path");
 var fs = require("fs");
+const uuidv4 = require("uuid/v4");
 
 // Sets up the Express App
 // =============================================================
@@ -44,11 +45,11 @@ app.post("/api/notes", function(req, res) {
     if (err) throw err;
     let dbArray = JSON.parse(data);
     // console.log(dbArray);
-    if (dbArray.length > 0) {
-      newNote.id = dbArray[dbArray.length - 1].id + 1;
-    } else {
-      newNote.id = 0;
-    }
+    // if (dbArray.length > 0) {
+    //   newNote.id = dbArray[dbArray.length - 1].id + 1;
+
+    newNote.id = uuidv4();
+
     dbArray.push(newNote);
     // console.log(dbArray);
     fs.writeFile("./db/db.json", JSON.stringify(dbArray), "utf8", err => {

@@ -6,6 +6,7 @@ var $noteList = $(".list-container .list-group");
 
 // activeNote is used to keep track of the note in the textarea
 var activeNote = {};
+// let actnID = 0;
 
 // A function for getting all notes from the db
 var getNotes = function() {
@@ -33,20 +34,23 @@ var deleteNote = function(id) {
 };
 
 // If there is an activeNote, display it, otherwise render empty inputs
-var renderActiveNote = function() {
-  $saveNoteBtn.hide();
+var renderActiveNote = function(actN = {}) {
+  // $saveNoteBtn.hide();
+  // console.log(actN.id);
 
-  if (activeNote.id) {
-    $noteTitle.attr("readonly", true);
-    $noteText.attr("readonly", true);
-    $noteTitle.val(activeNote.title);
-    $noteText.val(activeNote.text);
-  } else {
-    $noteTitle.attr("readonly", false);
-    $noteText.attr("readonly", false);
-    $noteTitle.val("");
-    $noteText.val("");
-  }
+  // if (actN.id !== undefined) {
+  // $noteTitle.attr("readonly", true);
+  // $noteText.attr("readonly", true);
+  $noteTitle.val(actN.title);
+  $noteText.val(actN.text);
+
+  // } else {
+  //   $noteTitle.attr("readonly", false);
+  //   $noteText.attr("readonly", false);
+  //   $noteTitle.val("");
+  //   $noteText.val("");
+  // }
+  // }
 };
 
 // Get the note data from the inputs, save it to the db and update the view
@@ -88,13 +92,13 @@ var handleNoteDelete = function(e) {
 // Sets the activeNote and displays it
 var handleNoteView = function() {
   activeNote = $(this).data();
-  renderActiveNote();
+  renderActiveNote(activeNote);
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
 var handleNewNoteView = function() {
   activeNote = {};
-  renderActiveNote();
+  renderActiveNote(activeNote);
 };
 
 // If a note's title or text are empty, hide the save button
