@@ -44,15 +44,41 @@ app.post("/api/notes", function(req, res) {
     if (err) throw err;
     let dbArray = JSON.parse(data);
     // console.log(dbArray);
+    if (dbArray.length > 0) {
+      newNote.id = dbArray[dbArray.length - 1].id + 1;
+    } else {
+      newNote.id = 0;
+    }
     dbArray.push(newNote);
     // console.log(dbArray);
     fs.writeFile("./db/db.json", JSON.stringify(dbArray), "utf8", err => {
       if (err) throw err;
-      console.log('The "data to append" was appended to file!');
+      console.log("The data was saved to file!");
     });
   });
+  res.end();
 });
 
+//Delete note
+
+app.delete("/api/notes/:id", function(req, res) {
+  var id = req.params.id;
+  //   console.log(id);
+  fs.readFile("./db/db.json", (err, data) => {
+    if (err) throw err;
+    let dbArray = JSON.parse(data);
+    let delItem = dbArray.find(obj => obj.id == id);
+
+    dbArray.pop(delItem);
+    console.log(dbArray);
+    fs.writeFile("./db/db.json", JSON.stringify(dbArray), "utf8", err => {
+      if (err) throw err;
+      console.log("The data was saved to file!");
+    });
+  });
+
+  res.end();
+});
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
